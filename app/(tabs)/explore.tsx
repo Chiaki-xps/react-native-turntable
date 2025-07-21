@@ -1,110 +1,154 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useState } from "react";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { addTurntable } from "../../store/turntableSlice";
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+export default function TurntableListScreen() {
+  const turntables = useSelector((state: RootState) => state.turntable.list);
+  const dispatch = useDispatch();
+  const [newName, setNewName] = useState("");
+  const [optionInputs, setOptionInputs] = useState<Record<string, string>>({});
 
-export default function TabTwoScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
+    <ThemedView style={{ flex: 1, backgroundColor: "#fff" }}>
+      {/* 顶部标题 */}
+      <View style={styles.headerWrap}>
+        <ThemedText type="title" style={styles.headerTitle}>
+          转盘列表
         </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
+      </View>
+      {/* 创建转盘按钮 */}
+      <TouchableOpacity
+        style={styles.createBtn}
+        onPress={() => {
+          if (newName.trim()) {
+            dispatch(addTurntable({ name: newName.trim() }));
+            setNewName("");
+          }
+        }}
+        activeOpacity={0.8}
+      >
+        <MaterialIcons name="add" size={20} color="#1890ff" />
+        <ThemedText style={styles.createBtnText}>创建转盘</ThemedText>
+      </TouchableOpacity>
+      {/* 转盘列表 */}
+      <FlatList
+        data={turntables}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12 }}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <ThemedText style={styles.cardTitle}>{item.name}</ThemedText>
+            <View style={styles.cardActions}>
+              <TouchableOpacity style={styles.iconBtn} onPress={() => {}}>
+                <MaterialIcons name="share" size={22} color="#1890ff" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconBtn} onPress={() => {}}>
+                <MaterialIcons name="edit" size={22} color="#1890ff" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        ListEmptyComponent={
+          <ThemedText
+            style={{ color: "#888", textAlign: "center", marginTop: 32 }}
+          >
+            暂无转盘，请先创建
           </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+        }
+      />
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  headerWrap: {
+    paddingTop: 40,
+    paddingBottom: 8,
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  tabBar: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    borderBottomWidth: 1,
+    borderColor: "#f0f0f0",
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+  },
+  tabActive: {
+    color: "#1890ff",
+    fontWeight: "bold",
+    fontSize: 16,
+    borderBottomWidth: 2,
+    borderColor: "#1890ff",
+    paddingBottom: 4,
+  },
+  createBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#1890ff",
+    borderRadius: 10, // 更小圆角
+    marginHorizontal: 16,
+    marginTop: 18,
+    marginBottom: 20,
+    paddingVertical: 8, // 更小高度
+    backgroundColor: "#fff",
+    minHeight: 36, // 更小最小高度
+    shadowColor: "#1890ff",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  createBtnText: {
+    color: "#1890ff",
+    fontSize: 16, // 更小字号
+    fontWeight: "bold",
+    marginLeft: 10, // 更小间距
+    letterSpacing: 1,
+  },
+  createInput: {
+    color: "#1890ff",
+    fontSize: 16,
+    marginLeft: 4,
+    flex: 1,
+    padding: 0,
+    backgroundColor: "transparent",
+    borderWidth: 0,
+  },
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f6f6fa",
+    borderRadius: 16,
+    paddingVertical: 18,
+    paddingHorizontal: 18,
+    marginBottom: 18,
+    justifyContent: "space-between",
+  },
+  cardTitle: {
+    fontSize: 17,
+    color: "#222",
+    fontWeight: "500",
+  },
+  cardActions: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  iconBtn: {
+    marginLeft: 12,
+    padding: 4,
   },
 });
