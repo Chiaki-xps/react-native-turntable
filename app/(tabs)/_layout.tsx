@@ -37,12 +37,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="list"
         options={{
           title: "列表",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="menu" color={color} />
-          ),
+          ), // 列表
         }}
       />
     </Tabs>

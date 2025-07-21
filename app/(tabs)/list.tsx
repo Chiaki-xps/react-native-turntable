@@ -11,7 +11,6 @@ export default function TurntableListScreen() {
   const turntables = useSelector((state: RootState) => state.turntable.list);
   const dispatch = useDispatch();
   const [newName, setNewName] = useState("");
-  const [optionInputs, setOptionInputs] = useState<Record<string, string>>({});
 
   return (
     <ThemedView style={{ flex: 1, backgroundColor: "#fff" }}>
