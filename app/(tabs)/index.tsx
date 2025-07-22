@@ -164,6 +164,12 @@ export default function HomeScreen() {
           </Animated.View>
         </View>
       </View>
+      {/* 结果展示 */}
+      {resultIdx !== null && options[resultIdx] && (
+        <View style={styles.resultWrap}>
+          <Text style={styles.resultText}>{options[resultIdx].text}</Text>
+        </View>
+      )}
     </ThemedView>
   );
 }
@@ -202,5 +208,21 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     letterSpacing: 2,
+  },
+  resultWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 18,
+    marginBottom: 0,
+  },
+  resultText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#1890ff",
+    letterSpacing: 4,
+    textShadowColor: "#e0eaff",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
+    bottom: 50,
   },
 });
