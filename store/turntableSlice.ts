@@ -23,11 +23,14 @@ const turntableSlice = createSlice({
   name: "turntable",
   initialState,
   reducers: {
-    addTurntable: (state, action: PayloadAction<{ name: string }>) => {
+    addTurntable: (
+      state,
+      action: PayloadAction<{ name: string; options: TurntableOption[] }>
+    ) => {
       state.list.push({
         id: nanoid(),
         name: action.payload.name,
-        options: [],
+        options: action.payload.options,
       });
     },
     removeTurntable: (state, action: PayloadAction<{ id: string }>) => {
