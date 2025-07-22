@@ -71,14 +71,12 @@ export default function HomeScreen() {
 
   const handleGo = () => {
     if (options.length === 0) return;
-    // 随机选一个扇区
     const idx = Math.floor(Math.random() * options.length);
-    setResultIdx(idx);
-    // 计算目标角度（让选中扇区正好指向上方）
-    const targetAngle = 360 * 5 + (360 - (idx + 0.5) * angleStep); // 多转几圈
+    setResultIdx(null); // 动画开始时隐藏结果
+    const targetAngle = 360 * 5 + (360 - (idx + 0.5) * angleStep);
     rotate.value = withTiming(targetAngle, { duration: 3000 }, () => {
       rotate.value = targetAngle % 360;
-      runOnJS(setResultIdx)(idx);
+      runOnJS(setResultIdx)(idx); // 动画结束后显示结果
     });
   };
 
@@ -164,9 +162,9 @@ export default function HomeScreen() {
           </Animated.View>
         </View>
       </View>
-      {/* 结果展示 */}
+      {/* 结果展示，绝对定位在底部 */}
       {resultIdx !== null && options[resultIdx] && (
-        <View style={styles.resultWrap}>
+        <View style={styles.resultAbsolute}>
           <Text style={styles.resultText}>{options[resultIdx].text}</Text>
         </View>
       )}
@@ -224,5 +222,13 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 8,
     bottom: 50,
+  },
+  resultAbsolute: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 48,
+    alignItems: "center",
+    zIndex: 10,
   },
 });
