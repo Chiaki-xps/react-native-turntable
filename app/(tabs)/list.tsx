@@ -32,7 +32,12 @@ export default function TurntableListScreen() {
           <View style={styles.card}>
             <ThemedText style={styles.cardTitle}>{item.name}</ThemedText>
             <View style={styles.cardActions}>
-              <TouchableOpacity style={styles.iconBtn} onPress={() => {}}>
+              <TouchableOpacity
+                style={styles.iconBtn}
+                onPress={() =>
+                  router.push({ pathname: "/edit", params: { id: item.id } })
+                }
+              >
                 <MaterialIcons name="edit" size={22} color="#1890ff" />
               </TouchableOpacity>
             </View>
