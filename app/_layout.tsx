@@ -9,8 +9,9 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { store } from "@/store/index";
+import { persistor, store } from "@/store/index";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -25,15 +26,19 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="create" options={{ headerShown: false }} />
-          <Stack.Screen name="edit" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="create" options={{ headerShown: false }} />
+            <Stack.Screen name="edit" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }
