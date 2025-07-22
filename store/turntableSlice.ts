@@ -13,10 +13,12 @@ export interface Turntable {
 
 interface TurntableState {
   list: Turntable[];
+  selectedId?: string;
 }
 
 const initialState: TurntableState = {
   list: [],
+  selectedId: undefined,
 };
 
 const turntableSlice = createSlice({
@@ -54,9 +56,17 @@ const turntableSlice = createSlice({
         t.options = t.options.filter((o) => o.id !== action.payload.optionId);
       }
     },
+    setSelectedTurntable: (state, action: PayloadAction<string>) => {
+      state.selectedId = action.payload;
+    },
   },
 });
 
-export const { addTurntable, removeTurntable, addOption, removeOption } =
-  turntableSlice.actions;
+export const {
+  addTurntable,
+  removeTurntable,
+  addOption,
+  removeOption,
+  setSelectedTurntable,
+} = turntableSlice.actions;
 export default turntableSlice.reducer;

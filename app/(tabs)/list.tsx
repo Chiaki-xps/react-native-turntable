@@ -1,13 +1,15 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { setSelectedTurntable } from "@/store/turntableSlice";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 export default function TurntableListScreen() {
   const turntables = useSelector((state: RootState) => state.turntable.list);
+  const dispatch = useDispatch();
   const router = useRouter();
   return (
     <ThemedView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -29,7 +31,14 @@ export default function TurntableListScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12 }}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              dispatch(setSelectedTurntable(item.id));
+              router.push("/");
+            }}
+            activeOpacity={0.85}
+          >
             <ThemedText style={styles.cardTitle}>{item.name}</ThemedText>
             <View style={styles.cardActions}>
               <TouchableOpacity
@@ -41,7 +50,7 @@ export default function TurntableListScreen() {
                 <MaterialIcons name="edit" size={22} color="#1890ff" />
               </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         ListEmptyComponent={
           <ThemedText

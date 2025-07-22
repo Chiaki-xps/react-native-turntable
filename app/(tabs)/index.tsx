@@ -52,7 +52,9 @@ const COLORS = [
 
 export default function HomeScreen() {
   const turntables = useSelector((state: RootState) => state.turntable.list);
-  const [selectedId] = useState<string | null>(null);
+  const selectedId = useSelector(
+    (state: RootState) => state.turntable.selectedId
+  );
   const turntable = selectedId
     ? turntables.find((t) => t.id === selectedId)
     : turntables[0];
