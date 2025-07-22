@@ -1,5 +1,6 @@
 {
-  "name": "turntable",
+  "name": "react-native-turntable",
+  "description": "一个基于React Native实现的转盘app",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
