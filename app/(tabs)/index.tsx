@@ -194,10 +194,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     zIndex: 2,
     elevation: 2,
-    shadowColor: "#428dff",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
+    ...(typeof window !== "undefined"
+      ? { boxShadow: "0px 2px 8px rgba(66, 141, 255, 0.12)" }
+      : {}),
     marginTop: 0,
     transform: [{ translateX: -38 }, { translateY: -38 }],
   },
@@ -218,9 +217,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1890ff",
     letterSpacing: 4,
-    textShadowColor: "#e0eaff",
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 8,
+    ...(typeof window !== "undefined"
+      ? { textShadow: "0px 2px 8px #e0eaff" }
+      : {}),
     bottom: 50,
   },
   resultAbsolute: {

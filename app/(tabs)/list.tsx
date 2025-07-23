@@ -88,11 +88,15 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     backgroundColor: "#fff",
     minHeight: 36,
-    shadowColor: "#1890ff",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
+    ...(typeof window !== "undefined"
+      ? { boxShadow: "0px 2px 8px rgba(24, 144, 255, 0.08)" }
+      : {
+          shadowColor: "#1890ff",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.08,
+          shadowRadius: 8,
+          elevation: 2,
+        }),
   },
   createBtnText: {
     color: "#1890ff",
