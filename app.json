@@ -3,7 +3,7 @@
     "name": "react-native-turntable",
     "slug": "react-native-turntable",
     "description": "一个基于React Native实现的转盘app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./app-logo.png",
     "scheme": "turntable",
