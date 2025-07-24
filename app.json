@@ -5,7 +5,7 @@
     "description": "一个基于React Native实现的转盘app",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./app-logo.png",
+    "icon": "./assets/images/app-logo.png",
     "scheme": "turntable",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/app-logo.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
