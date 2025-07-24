@@ -61,24 +61,33 @@ export default function HomeScreen() {
   const options = turntable?.options || [];
   const angleStep = options.length > 0 ? 360 / options.length : 360;
 
+  // ================== 转盘旋转核心逻辑 ==================
   // 动画相关
-  const rotate = useSharedValue(0);
-  const [resultIdx, setResultIdx] = useState<number | null>(null);
+  const rotate = useSharedValue(0); // 记录当前转盘的旋转角度（动画值）
+  const [resultIdx, setResultIdx] = useState<number | null>(null); // 记录抽中的选项索引
 
+  // 绑定动画样式，使转盘随 rotate 变化旋转
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotate.value}deg` }],
   }));
 
+  // 点击 GO 按钮时触发转盘旋转
   const handleGo = () => {
     if (options.length === 0) return;
+    // 随机抽取一个选项索引
     const idx = Math.floor(Math.random() * options.length);
     setResultIdx(null); // 动画开始时隐藏结果
+    // 计算目标角度：多转5圈再停到目标选项（idx），0.5是让指针指向扇区中间
     const targetAngle = 360 * 5 + (360 - (idx + 0.5) * angleStep);
+    // 启动动画，3秒内转到目标角度
     rotate.value = withTiming(targetAngle, { duration: 3000 }, () => {
+      // 动画结束后，角度归一化到0-360
       rotate.value = targetAngle % 360;
-      runOnJS(setResultIdx)(idx); // 动画结束后显示结果
+      // 显示抽中的结果
+      runOnJS(setResultIdx)(idx);
     });
   };
+  // ================== 转盘旋转核心逻辑 END ==================
 
   return (
     <ThemedView style={{ flex: 1, backgroundColor: "#fff" }}>
