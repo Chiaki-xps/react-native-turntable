@@ -17,8 +17,21 @@ interface TurntableState {
 }
 
 const initialState: TurntableState = {
-  list: [],
-  selectedId: undefined,
+  list: [
+    {
+      id: "default-1",
+      name: "今天吃什么",
+      options: [
+        { id: "opt-1", text: "米饭" },
+        { id: "opt-2", text: "面条" },
+        { id: "opt-3", text: "火锅" },
+        { id: "opt-4", text: "烧烤" },
+        { id: "opt-5", text: "沙拉" },
+        { id: "opt-6", text: "快餐" },
+      ],
+    },
+  ],
+  selectedId: "default-1",
 };
 
 const turntableSlice = createSlice({
