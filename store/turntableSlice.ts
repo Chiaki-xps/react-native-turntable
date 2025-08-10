@@ -38,18 +38,13 @@ const turntableSlice = createSlice({
   name: "turntable",
   initialState,
   reducers: {
-    addTurntable: (
-      state,
-      action: PayloadAction<{ name: string; options: TurntableOption[] }>
-    ) => {
-      state.list.push({
-        id: nanoid(),
-        name: action.payload.name,
-        options: action.payload.options,
-      });
-    },
-    removeTurntable: (state, action: PayloadAction<{ id: string }>) => {
-      state.list = state.list.filter((t) => t.id !== action.payload.id);
+    addTurntable: (state, action: PayloadAction<Omit<Turntable, "id">>) => {
+      const newTurntable: Turntable = {
+        ...action.payload,
+        id: Math.random().toString(36).slice(2),
+      };
+      state.list.push(newTurntable);
+      state.selectedId = newTurntable.id;
     },
     addOption: (
       state,
@@ -72,14 +67,22 @@ const turntableSlice = createSlice({
     setSelectedTurntable: (state, action: PayloadAction<string>) => {
       state.selectedId = action.payload;
     },
+    deleteTurntable: (state, action: PayloadAction<string>) => {
+      const deleteId = action.payload;
+      state.list = state.list.filter((turntable) => turntable.id !== deleteId);
+      // 如果删除的是当前选中的转盘，则选中第一个转盘
+      if (state.selectedId === deleteId) {
+        state.selectedId = state.list.length > 0 ? state.list[0].id : undefined;
+      }
+    },
   },
 });
 
 export const {
   addTurntable,
-  removeTurntable,
   addOption,
   removeOption,
   setSelectedTurntable,
+  deleteTurntable,
 } = turntableSlice.actions;
 export default turntableSlice.reducer;
