@@ -1,3 +1,4 @@
+import ShareModal from "@/components/ShareModal";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { deleteTurntable, setSelectedTurntable } from "@/store/turntableSlice";
@@ -20,9 +21,19 @@ export default function TurntableListScreen() {
     name: string;
   }>({ show: false, id: "", name: "" });
 
+  // 分享模态框状态
+  const [shareModal, setShareModal] = useState<{
+    show: boolean;
+    turntable: any;
+  }>({ show: false, turntable: null });
+
   const handleDelete = (id: string, name: string) => {
     // 显示确认对话框
     setDeleteConfirm({ show: true, id, name });
+  };
+
+  const handleShare = (turntable: any) => {
+    setShareModal({ show: true, turntable });
   };
 
   const confirmDelete = () => {
@@ -95,6 +106,15 @@ export default function TurntableListScreen() {
                 style={styles.iconBtn}
                 onPress={(e) => {
                   e.stopPropagation();
+                  handleShare(item);
+                }}
+              >
+                <MaterialIcons name="share" size={22} color="#722ed1" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.iconBtn}
+                onPress={(e) => {
+                  e.stopPropagation();
                   router.push({ pathname: "/edit", params: { id: item.id } });
                 }}
               >
@@ -120,6 +140,15 @@ export default function TurntableListScreen() {
           </ThemedText>
         }
       />
+
+      {/* 分享模态框 */}
+      {shareModal.show && shareModal.turntable && (
+        <ShareModal
+          visible={shareModal.show}
+          onClose={() => setShareModal({ show: false, turntable: null })}
+          turntable={shareModal.turntable}
+        />
+      )}
     </ThemedView>
   );
 }
