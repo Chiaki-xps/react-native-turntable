@@ -1,6 +1,8 @@
 # React Native 转盘应用
 
-一个基于 React Native 实现的转盘抽奖/决策应用，支持多端运行（iOS、Android、Web）。
+一个基于 React Native 实现的转盘抽奖/决策应用，支持多端运行（iOS（待开发）、Android、Web）。
+
+![image-download](./download.png)
 
 ## 功能特性
 
@@ -104,6 +106,12 @@ turntable/
 ├── store/                 # Redux 状态管理
 ├── assets/                # 静态资源
 └── app.json              # Expo 配置
+```
+
+## 打包
+
+```shell
+npx eas build --platform android --profile preview
 ```
 
 ## 版本历史
