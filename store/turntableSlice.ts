@@ -46,6 +46,24 @@ const turntableSlice = createSlice({
       state.list.push(newTurntable);
       state.selectedId = newTurntable.id;
     },
+    importTurntable: (state, action: PayloadAction<Omit<Turntable, "id">>) => {
+      let { name } = action.payload;
+      let counter = 1;
+
+      // 检查是否存在重名转盘，如果存在则添加序号
+      while (state.list.some((t) => t.name === name)) {
+        name = `${action.payload.name} (${counter})`;
+        counter++;
+      }
+
+      const newTurntable: Turntable = {
+        ...action.payload,
+        name,
+        id: Math.random().toString(36).slice(2),
+      };
+      state.list.push(newTurntable);
+      state.selectedId = newTurntable.id;
+    },
     addOption: (
       state,
       action: PayloadAction<{ turntableId: string; text: string }>
@@ -80,6 +98,7 @@ const turntableSlice = createSlice({
 
 export const {
   addTurntable,
+  importTurntable,
   addOption,
   removeOption,
   setSelectedTurntable,

@@ -1,7 +1,12 @@
+import ScanModal from "@/components/ScanModal";
 import ShareModal from "@/components/ShareModal";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { deleteTurntable, setSelectedTurntable } from "@/store/turntableSlice";
+import {
+  deleteTurntable,
+  importTurntable,
+  setSelectedTurntable,
+} from "@/store/turntableSlice";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -27,6 +32,9 @@ export default function TurntableListScreen() {
     turntable: any;
   }>({ show: false, turntable: null });
 
+  // 扫描模态框状态
+  const [scanModal, setScanModal] = useState(false);
+
   const handleDelete = (id: string, name: string) => {
     // 显示确认对话框
     setDeleteConfirm({ show: true, id, name });
@@ -34,6 +42,11 @@ export default function TurntableListScreen() {
 
   const handleShare = (turntable: any) => {
     setShareModal({ show: true, turntable });
+  };
+
+  const handleScanSuccess = (turntable: any) => {
+    dispatch(importTurntable(turntable));
+    router.push("/");
   };
 
   const confirmDelete = () => {
@@ -59,7 +72,7 @@ export default function TurntableListScreen() {
           <View style={styles.confirmDialog}>
             <ThemedText style={styles.confirmTitle}>确认删除</ThemedText>
             <ThemedText style={styles.confirmMessage}>
-              确定要删除转盘"{deleteConfirm.name}"吗？
+              确定要删除转盘&quot;{deleteConfirm.name}&quot;吗？
             </ThemedText>
             <View style={styles.confirmButtons}>
               <TouchableOpacity
@@ -78,14 +91,25 @@ export default function TurntableListScreen() {
           </View>
         </View>
       )}
-      <TouchableOpacity
-        style={styles.createBtn}
-        onPress={() => router.push("/create")}
-        activeOpacity={0.8}
-      >
-        <MaterialIcons name="add" size={20} color="#1890ff" />
-        <ThemedText style={styles.createBtnText}>创建转盘</ThemedText>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.createBtn}
+          onPress={() => router.push("/create")}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons name="add" size={20} color="#1890ff" />
+          <ThemedText style={styles.createBtnText}>创建转盘</ThemedText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.scanBtn}
+          onPress={() => setScanModal(true)}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons name="qr-code-scanner" size={20} color="#52c41a" />
+          <ThemedText style={styles.scanBtnText}>扫描导入</ThemedText>
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={turntables}
@@ -149,6 +173,13 @@ export default function TurntableListScreen() {
           turntable={shareModal.turntable}
         />
       )}
+
+      {/* 扫描模态框 */}
+      <ScanModal
+        visible={scanModal}
+        onClose={() => setScanModal(false)}
+        onScanSuccess={handleScanSuccess}
+      />
     </ThemedView>
   );
 }
@@ -164,16 +195,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  buttonContainer: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    marginTop: 18,
+    marginBottom: 20,
+    gap: 12,
+  },
   createBtn: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "#1890ff",
     borderRadius: 10,
-    marginHorizontal: 16,
-    marginTop: 18,
-    marginBottom: 20,
     paddingVertical: 8,
     backgroundColor: "#fff",
     minHeight: 36,
@@ -187,8 +223,36 @@ const styles = StyleSheet.create({
           elevation: 2,
         }),
   },
+  scanBtn: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#52c41a",
+    borderRadius: 10,
+    paddingVertical: 8,
+    backgroundColor: "#fff",
+    minHeight: 36,
+    ...(typeof window !== "undefined"
+      ? { boxShadow: "0px 2px 8px rgba(82, 196, 26, 0.08)" }
+      : {
+          shadowColor: "#52c41a",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.08,
+          shadowRadius: 8,
+          elevation: 2,
+        }),
+  },
   createBtnText: {
     color: "#1890ff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 10,
+    letterSpacing: 1,
+  },
+  scanBtnText: {
+    color: "#52c41a",
     fontSize: 16,
     fontWeight: "bold",
     marginLeft: 10,

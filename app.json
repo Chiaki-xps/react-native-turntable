@@ -35,6 +35,12 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "允许应用使用相机来扫描二维码"
+        }
       ]
     ],
     "experiments": {
