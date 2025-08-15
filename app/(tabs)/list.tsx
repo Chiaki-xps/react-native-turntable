@@ -124,7 +124,13 @@ export default function TurntableListScreen() {
             }}
             activeOpacity={0.85}
           >
-            <ThemedText style={styles.cardTitle}>{item.name}</ThemedText>
+            <ThemedText
+              style={styles.cardTitle}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {item.name}
+            </ThemedText>
             <View style={styles.cardActions}>
               <TouchableOpacity
                 style={styles.iconBtn}
