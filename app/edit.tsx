@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { addTurntable } from "../store/turntableSlice";
+import { updateTurntable } from "../store/turntableSlice";
 
 function genOption(color = "#f87171") {
   return {
@@ -64,13 +64,16 @@ export default function EditTurntableScreen() {
   };
   const handleSave = () => {
     if (!name.trim() || options.some((o) => !o.text.trim())) return;
-    // 这里只是简单复用 addTurntable，实际应为 updateTurntable
-    dispatch(
-      addTurntable({
-        name: name.trim(),
-        options: options.map(({ id, text }) => ({ id, text })),
-      })
-    );
+
+    if (turntable) {
+      dispatch(
+        updateTurntable({
+          ...turntable,
+          name: name.trim(),
+          options: options.map(({ id, text }) => ({ id, text })),
+        })
+      );
+    }
     router.replace("/list");
   };
 

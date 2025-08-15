@@ -93,6 +93,12 @@ const turntableSlice = createSlice({
         state.selectedId = state.list.length > 0 ? state.list[0].id : undefined;
       }
     },
+    updateTurntable: (state, action: PayloadAction<Turntable>) => {
+      const index = state.list.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        state.list[index] = action.payload;
+      }
+    },
   },
 });
 
@@ -103,5 +109,6 @@ export const {
   removeOption,
   setSelectedTurntable,
   deleteTurntable,
+  updateTurntable,
 } = turntableSlice.actions;
 export default turntableSlice.reducer;
