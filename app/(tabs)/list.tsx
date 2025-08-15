@@ -139,7 +139,7 @@ export default function TurntableListScreen() {
                   handleShare(item);
                 }}
               >
-                <MaterialIcons name="share" size={22} color="#722ed1" />
+                <MaterialIcons name="share" size={20} color="#722ed1" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.iconBtn}
@@ -148,7 +148,7 @@ export default function TurntableListScreen() {
                   router.push({ pathname: "/edit", params: { id: item.id } });
                 }}
               >
-                <MaterialIcons name="edit" size={22} color="#1890ff" />
+                <MaterialIcons name="edit" size={20} color="#1890ff" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.iconBtn}
@@ -157,7 +157,7 @@ export default function TurntableListScreen() {
                   handleDelete(item.id, item.name);
                 }}
               >
-                <MaterialIcons name="delete" size={22} color="#ff4d4f" />
+                <MaterialIcons name="delete" size={20} color="#ff4d4f" />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
@@ -272,22 +272,24 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 18,
     marginBottom: 18,
-    justifyContent: "space-between",
   },
   cardTitle: {
     fontSize: 17,
     color: "#222",
     fontWeight: "500",
+    flex: 1,
+    marginRight: 12,
   },
   cardActions: {
     flexDirection: "row",
     alignItems: "center",
+    flexShrink: 0,
   },
   iconBtn: {
-    marginLeft: 12,
-    padding: 8,
-    minWidth: 40,
-    minHeight: 40,
+    marginLeft: 8,
+    padding: 6,
+    minWidth: 36,
+    minHeight: 36,
     justifyContent: "center",
     alignItems: "center",
   },
